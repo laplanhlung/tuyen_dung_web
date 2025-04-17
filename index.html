@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang tuyển dụng</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f0f2f5;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      max-width: 500px;
+      margin: 20px auto;
+      background: #e8f5e9;
+      padding: 15px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Form tuyển dụng</h2>
+  <form id="recruitForm">
+    <label for="name">Họ tên người tuyển dụng:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="company">Tên công ty:</label>
+    <input type="text" id="company" name="company" required>
+
+    <label for="email">Email liên hệ:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="note">Ghi chú:</label>
+    <textarea id="note" name="note" rows="4"></textarea>
+
+    <button type="submit">Lưu thông tin</button>
+  </form>
+
+  <div class="result" id="savedInfo" style="display:none;">
+    <h3>Thông tin đã lưu:</h3>
+    <p><strong>Họ tên:</strong> <span id="savedName"></span></p>
+    <p><strong>Công ty:</strong> <span id="savedCompany"></span></p>
+    <p><strong>Email:</strong> <span id="savedEmail"></span></p>
+    <p><strong>Ghi chú:</strong> <span id="savedNote"></span></p>
+  </div>
+
+  <script>
+    const form = document.getElementById('recruitForm');
+    const savedInfoDiv = document.getElementById('savedInfo');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Lấy dữ liệu từ form
+      const name = document.getElementById('name').value;
+      const company = document.getElementById('company').value;
+      const email = document.getElementById('email').value;
+      const note = document.getElementById('note').value;
+
+      // Lưu vào localStorage
+      const recruiter = { name, company, email, note };
+      localStorage.setItem('recruiterInfo', JSON.stringify(recruiter));
+
+      // Hiển thị lại thông tin
+      document.getElementById('savedName').textContent = name;
+      document.getElementById('savedCompany').textContent = company;
+      document.getElementById('savedEmail').textContent = email;
+      document.getElementById('savedNote').textContent = note;
+      savedInfoDiv.style.display = 'block';
+    });
+
+    // Kiểm tra nếu đã lưu rồi thì hiển thị
+    window.onload = function() {
+      const saved = localStorage.getItem('recruiterInfo');
+      if (saved) {
+        const data = JSON.parse(saved);
+        document.getElementById('savedName').textContent = data.name;
+        document.getElementById('savedCompany').textContent = data.company;
+        document.getElementById('savedEmail').textContent = data.email;
+        document.getElementById('savedNote').textContent = data.note;
+        savedInfoDiv.style.display = 'block';
+      }
+    };
+  </script>
+
+</body>
+</html>
